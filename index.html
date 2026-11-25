@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CHEM-MAT XR | Corrosion Learning Lab</title>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/three.js/build/ar.js"></script>
+<style>
+:root{--navy:#102b46;--teal:#087e83;--gold:#e5ad4b;--ink:#203247;--muted:#62788a;--bg:#f1f5f7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Arial,sans-serif}
+header{padding:30px max(4vw,18px);color:white;background:linear-gradient(120deg,#102b46,#087e83)}
+header small{letter-spacing:2px;color:#c2e9e4;font-weight:bold}h1{font-size:clamp(28px,5vw,44px);margin:7px 0}header p{max-width:800px;margin:0;color:#e5f1f3}
+nav{display:flex;gap:7px;flex-wrap:wrap;background:white;padding:12px max(4vw,18px);position:sticky;top:0;z-index:5;box-shadow:0 2px 10px #102b4610}
+button{border:0;border-radius:9px;padding:10px 14px;background:#e6eef1;color:var(--navy);font-weight:bold;cursor:pointer;margin:3px}button.primary,.active{background:var(--teal)!important;color:white!important}button:disabled{opacity:.5;cursor:not-allowed}
+main{max-width:1150px;margin:24px auto;padding:0 16px}.panel{display:none}.panel.active{display:block}.card{background:white;border:1px solid #e0e9ed;border-radius:15px;padding:19px;box-shadow:0 5px 18px #102b460b;margin-bottom:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px}.eyebrow{font-size:11px;letter-spacing:1.4px;color:var(--teal);font-weight:800}.muted,.hint{color:var(--muted);font-size:13px}
+h2,h3{color:var(--navy);margin:5px 0 10px}.heroTiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px}.tile{padding:17px;border-radius:13px;background:#edf5f5;border:1px solid #dcebea}.tile b{display:block;color:var(--teal);font-size:18px}
+label{display:block;font-weight:bold;margin:10px 0 5px}select,input{width:100%;padding:11px;border:1px solid #cbd8df;border-radius:9px;background:white;font:inherit}
+#arMount{height:490px;background:#111;border-radius:13px;overflow:hidden;position:relative}#arMount a-scene{height:100%;width:100%}
+.arOverlay{position:absolute;top:10px;left:10px;right:10px;z-index:2;color:white;background:#102b46c9;padding:9px 12px;border-radius:9px;font-size:13px;pointer-events:none}
+#vrScene{height:520px;width:100%;border-radius:13px;overflow:hidden;background:#dce8eb}
+.result{background:#edf7f5;padding:13px;border-radius:10px;margin-top:12px;border-left:4px solid var(--teal)}
+.chat{height:220px;overflow:auto;background:#f4f7f9;border:1px solid #dce5e9;padding:10px;border-radius:10px}.msg{padding:9px 11px;border-radius:10px;margin:7px 0;max-width:92%;white-space:pre-wrap}.bot{background:#e1f0ed}.user{background:#e6edf8;margin-left:auto}
+table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid #e2e9ed;padding:9px;text-align:left;vertical-align:top}th{background:#edf4f6}
+.sceneNote{font-size:12px;background:#fff8e8;border-left:4px solid var(--gold);padding:10px;border-radius:8px}
+footer{text-align:center;padding:25px;color:var(--muted);font-size:12px}
+@media(max-width:600px){#arMount{height:420px}#vrScene{height:430px}nav{position:static}}
+</style></head>
+<body>
+<header><small>IMMERSIVE LEARNING • CHEMICAL ENGINEERING</small><h1>CHEM-MAT XR</h1><p>Corrosion Learning Lab — media pembelajaran interaktif Bahan Konstruksi Kimia melalui AR, VR, dan simulasi AI. Konteks lokal: lingkungan Sungai Musi dan Jembatan Ampera, Palembang.</p></header>
+<nav>
+<button class="tab active" data-id="home">Beranda</button><button class="tab" data-id="concept">Materi</button><button class="tab" data-id="ar">AR Material Lab</button><button class="tab" data-id="vr">VR Chemical Plant</button><button class="tab" data-id="ai">AI Decision Lab</button><button class="tab" data-id="quiz">Evaluasi</button>
+</nav>
+<main>
+<section id="home" class="panel active">
+<div class="card"><div class="eyebrow">SELAMAT DATANG</div><h2>Belajar korosi melalui eksplorasi dan pengambilan keputusan</h2><p>Ikuti urutan belajar: pahami konsep, amati model AR, jelajahi fasilitas virtual, uji skenario material, lalu evaluasi pemahaman.</p>
+<div class="heroTiles"><div class="tile"><b>01 • AR</b>Amati model pipa, lapisan korosi, dan film pasif melalui kamera.</div><div class="tile"><b>02 • VR</b>Jelajahi tangki, jaringan pipa, pompa, dan area inspeksi.</div><div class="tile"><b>03 • AI</b>Bandingkan kandidat material berdasarkan kondisi operasi.</div></div></div>
+<div class="grid"><div class="card"><h3>Tujuan pembelajaran</h3><ul><li>Menjelaskan reaksi anodik dan katodik.</li><li>Mengidentifikasi faktor yang memengaruhi korosi.</li><li>Menganalisis pilihan material untuk kondisi operasi tertentu.</li></ul></div><div class="card"><h3>Konteks lokal Palembang</h3><p>Lingkungan lembap tepi Sungai Musi digunakan sebagai studi kasus korosi atmosfer. Jembatan Ampera menjadi konteks pengenalan struktur baja, bukan klaim inspeksi atau kerusakan aktual.</p></div></div>
+<div class="sceneNote"><b>Petunjuk AR:</b> AR menggunakan marker Hiro. Buka halaman melalui HTTPS, izinkan kamera, lalu arahkan kamera ke marker Hiro yang dicetak atau ditampilkan pada layar lain. Tombol “Muat AR” akan meminta izin kamera.</div>
+</section>
+<section id="concept" class="panel">
+<div class="card"><div class="eyebrow">MODUL PEMBELAJARAN</div><h2>Korosi pada bahan konstruksi kimia</h2>
+<p>Korosi adalah degradasi material akibat interaksi dengan lingkungan. Pada korosi elektrokimia, bagian anodik mengalami oksidasi dan pelarutan logam, sedangkan reaksi reduksi terjadi pada bagian katodik.</p>
+<div class="grid"><div><h3>Reaksi dasar besi</h3><p><b>Anoda:</b> Fe → Fe²⁺ + 2e⁻</p><p><b>Katoda:</b> O₂ + 2H₂O + 4e⁻ → 4OH⁻</p><p>Produk korosi besi terbentuk melalui reaksi lanjutan ion besi, hidroksida, dan oksigen.</p></div><div><h3>Faktor utama</h3><ul><li>Kelembapan dan elektrolit.</li><li>pH, klorida, dan oksigen terlarut.</li><li>Temperatur dan kecepatan aliran.</li><li>Celah, pasangan logam, dan kondisi permukaan.</li></ul></div></div>
+<h3>Perbandingan material (pengantar)</h3><table><tr><th>Material</th><th>Keunggulan umum</th><th>Hal yang harus diperiksa</th></tr><tr><td>Baja karbon</td><td>Kuat, ekonomis, mudah difabrikasi</td><td>Korosi; coating, lining, corrosion allowance, inspeksi</td></tr><tr><td>Stainless steel</td><td>Film pasif kaya kromium</td><td>Grade, klorida, pitting, celah, temperatur</td></tr><tr><td>HDPE</td><td>Tahan banyak larutan, tidak berkarat elektrokimia</td><td>Temperatur, tekanan, permeasi, kompatibilitas</td></tr><tr><td>FRP</td><td>Ketahanan kimia dapat dirancang melalui resin</td><td>Jenis resin, serat, sambungan, beban, fabrikasi</td></tr></table>
+<p class="hint">Materi pengantar; penetapan material industri memerlukan data kompatibilitas, standar, kondisi operasi, dan kajian insinyur.</p></div>
+</section>
+<section id="ar" class="panel"><div class="card"><div class="eyebrow">AUGMENTED REALITY</div><h2>AR Material Lab</h2><p>Marker Hiro memunculkan model pipa 3D, cincin penampang, dan lapisan korosi ilustratif.</p>
+<button class="primary" id="loadAR">Muat AR & aktifkan kamera</button><button id="closeAR">Tutup kamera</button><div id="arStatus" class="hint">Status: kamera belum diaktifkan.</div>
+<div id="arMount"><div class="arOverlay">Arahkan kamera ke marker Hiro • Jarak ±20–80 cm • Pastikan marker terang dan tidak terpotong</div></div>
+<div class="sceneNote">Jika kamera gagal: pastikan URL menggunakan HTTPS (atau localhost), izin kamera diberikan, tidak ada aplikasi lain yang sedang memakai kamera, dan marker Hiro tercetak jelas. AR memerlukan koneksi internet untuk memuat pustaka.</div></div></section>
+<section id="vr" class="panel"><div class="card"><div class="eyebrow">VIRTUAL REALITY</div><h2>VR Chemical Plant – tur fasilitas 3D</h2><p>Gunakan mouse/geser layar untuk melihat sekeliling, tombol WASD untuk bergerak di desktop, atau tombol VR untuk headset yang mendukung WebXR. Klik hotspot untuk membaca keterangan.</p>
+<div id="vrScene">
+<a-scene embedded vr-mode-ui="enabled:true" renderer="antialias:true" shadow="type:pcfsoft" style="height:100%;width:100%">
+<a-sky color="#d8e6eb"></a-sky><a-plane rotation="-90 0 0" width="40" height="40" color="#83969a" shadow="receive:true"></a-plane>
+<!-- lantai jalur kuning -->
+<a-box position="0 .025 -4" width="12" height=".05" depth="8" color="#a9b5b4"></a-box>
+<!-- struktur bangunan -->
+<a-box position="-5 2 -5" width=".18" height="4" depth="10" color="#617b83"></a-box><a-box position="5 2 -5" width=".18" height="4" depth="10" color="#617b83"></a-box>
+<a-box position="0 4 -5" width="10" height=".18" depth="10" color="#617b83"></a-box>
+<!-- tangki vertikal -->
+<a-cylinder position="-2 1.5 -5" radius=".85" height="3" color="#b9c9ce" metalness=".55" roughness=".35"></a-cylinder>
+<a-cone position="-2 3.15 -5" radius-bottom=".85" radius-top=".15" height=".45" color="#899fa7"></a-cone>
+<a-cylinder position="-2 3.48 -5" radius=".15" height=".2" color="#647c83"></a-cylinder>
+<a-torus position="-2 .45 -5" radius=".87" radius-tubular=".035" color="#d19b48" rotation="90 0 0"></a-torus>
+<!-- tangki horizontal -->
+<a-cylinder position="2 1.15 -7" radius=".7" height="3.2" rotation="0 0 90" color="#a8bac1"></a-cylinder>
+<a-sphere position="3.62 1.15 -7" radius=".7" color="#a8bac1"></a-sphere>
+<!-- pipa berwarna -->
+<a-cylinder position="0 .85 -3.4" radius=".12" height="5.2" rotation="0 0 90" color="#b66c43"></a-cylinder>
+<a-cylinder position="0 1.7 -4.5" radius=".1" height="2.5" rotation="90 0 0" color="#d2b04d"></a-cylinder>
+<a-cylinder position="1 1.7 -5.75" radius=".1" height="2" rotation="0 0 90" color="#b66c43"></a-cylinder>
+<a-cylinder position="-.5 1.7 -5.75" radius=".1" height="1.2" rotation="0 0 90" color="#d2b04d"></a-cylinder>
+<!-- pompa -->
+<a-cylinder position="2 0.55 -3.6" radius=".42" height=".7" color="#477f91"></a-cylinder><a-cylinder position="2 .55 -3.15" radius=".18" height=".3" rotation="90 0 0" color="#d5b15c"></a-cylinder>
+<!-- kolom -->
+<a-cylinder position="4 1.8 -5" radius=".32" height="3.6" color="#b8c7cb"></a-cylinder><a-cylinder position="4 3.65 -5" radius=".34" height=".12" color="#687f86"></a-cylinder>
+<!-- platform -->
+<a-box position="0 .18 -5.4" width="8.5" height=".18" depth="5" color="#6e858b"></a-box>
+<!-- safety railing -->
+<a-cylinder position="-4 .75 -3.2" radius=".035" height="1.3" color="#e5b34f"></a-cylinder><a-cylinder position="-3 .75 -3.2" radius=".035" height="1.3" color="#e5b34f"></a-cylinder><a-cylinder position="-3.5 1.15 -3.2" radius=".035" height="1.05" rotation="0 0 90" color="#e5b34f"></a-cylinder>
+<!-- labels / hotspots -->
+<a-entity class="hotspot" position="-2 3.9 -5" data-info="Tangki penyimpanan: pemilihan material dipengaruhi komposisi fluida, temperatur, tekanan, metode fabrikasi, dan inspeksi."><a-sphere radius=".16" color="#e5ad4b"></a-sphere><a-text value="TANGKI" position="-.65 .3 0" color="#102b46" width="3"></a-text></a-entity>
+<a-entity class="hotspot" position="0 1.3 -3.3" data-info="Jaringan pipa: evaluasi korosi internal dan eksternal, kecepatan aliran, celah, sambungan, serta proteksi permukaan."><a-sphere radius=".14" color="#e5ad4b"></a-sphere><a-text value="PIPA" position="-.35 .3 0" color="#102b46" width="2"></a-text></a-entity>
+<a-entity class="hotspot" position="2 .9 -3.1" data-info="Pompa: periksa kompatibilitas material casing, impeller, seal, dan potensi erosi-korosi."><a-sphere radius=".14" color="#e5ad4b"></a-sphere><a-text value="POMPA" position="-.45 .3 0" color="#102b46" width="2"></a-text></a-entity>
+<a-entity class="hotspot" position="4 2.3 -5" data-info="Kolom proses: material harus sesuai kondisi kimia, temperatur, tekanan, dan beban mekanik."><a-sphere radius=".14" color="#e5ad4b"></a-sphere><a-text value="KOLOM" position="-.45 .3 0" color="#102b46" width="2"></a-text></a-entity>
+<a-entity position="0 1.6 1"><a-camera wasd-controls="acceleration:20"><a-cursor color="#087e83" fuse="false"></a-cursor></a-camera></a-entity>
+</a-scene></div>
+<div id="hotspotInfo" class="result">Klik salah satu titik kuning pada scene untuk melihat informasi peralatan.</div>
+<div class="hint">Scene merupakan model pembelajaran konseptual, bukan replika fasilitas industri nyata. Pada perangkat seluler, performa bergantung pada kemampuan browser dan GPU.</div></div></section>
+<section id="ai" class="panel"><div class="card"><div class="eyebrow">AI-ASSISTED CASE SIMULATOR</div><h2>AI Material Decision Lab</h2><p>Simulasi membantu menyaring pertimbangan awal. Sistem ini adalah prototipe aturan/pengetahuan, belum tersambung ke layanan GenAI live atau database material industri.</p>
+<div class="grid"><div><label>Lingkungan / fluida</label><select id="fluid"><option value="river">Atmosfer lembap tepi Sungai Musi</option><option value="acid">Larutan asam (contoh HCl)</option><option value="chloride">Air mengandung klorida</option><option value="alkali">Larutan basa</option></select>
+<label>Konsentrasi (perkiraan, % massa)</label><input id="conc" type="number" value="1" min="0" max="100">
+<label>Temperatur (°C)</label><input id="temp" type="number" value="30" min="-20" max="300">
+<label>Tekanan (bar)</label><input id="pressure" type="number" value="3" min="0" max="200">
+<label>Prioritas</label><select id="priority"><option value="balanced">Keseimbangan biaya dan ketahanan</option><option value="corrosion">Ketahanan korosi</option><option value="cost">Biaya awal</option></select><button class="primary" id="runAnalysis">Jalankan simulasi</button></div>
+<div><h3>Parameter kasus</h3><div id="case" class="result">Lengkapi kondisi operasi.</div></div></div><div id="analysis" class="result">Hasil perbandingan akan muncul di sini.</div>
+<h3>Diskusi dengan tutor simulasi</h3><div class="chat" id="chat"><div class="msg bot">Saya dapat membantu menjelaskan mekanisme korosi, risiko klorida, dan data yang dibutuhkan untuk seleksi material.</div></div><div class="grid"><input id="askText" placeholder="Contoh: Mengapa klorida berbahaya bagi stainless steel?"><button class="primary" id="askBtn">Tanya</button></div><p class="hint">Untuk GenAI sungguhan, sambungkan frontend ke backend aman dan model bahasa melalui API. Jangan menyimpan API key di file HTML publik.</p></div></section>
+<section id="quiz" class="panel"><div class="card"><div class="eyebrow">FORMATIVE ASSESSMENT</div><h2>Evaluasi pemahaman</h2><div id="questions"></div><button class="primary" id="submitQuiz">Periksa jawaban</button><div id="score" class="result">Pilih jawaban dan periksa hasilnya.</div></div></section>
+</main><footer>CHEM-MAT XR • Prototipe media pembelajaran Bahan Konstruksi Kimia • Konteks lokal Palembang</footer>
+<script>
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.id).classList.add('active')});
+// AR lifecycle: AR.js A-Frame component, loaded only after user gesture
+let arScene=null;
+document.getElementById('loadAR').onclick=()=>{
+ if(arScene)return;
+ const mount=document.getElementById('arMount');mount.innerHTML='<div class="arOverlay">Arahkan kamera ke marker Hiro</div>';
+ const s=document.createElement('a-scene');s.setAttribute('embedded','');s.setAttribute('vr-mode-ui','enabled:false');s.setAttribute('renderer','logarithmicDepthBuffer:true; colorManagement:true');s.setAttribute('arjs','sourceType:webcam;debugUIEnabled:false;detectionMode:mono;trackingMethod:best;');
+ s.style.cssText='width:100%;height:100%';
+ s.innerHTML=`<a-marker preset="hiro">
+ <a-cylinder position="0 .48 0" radius=".34" height=".9" color="#b86e43"></a-cylinder>
+ <a-cylinder position="0 .48 0" radius=".355" height=".92" color="#673d2d" opacity=".32"></a-cylinder>
+ <a-torus position="0 .48 0" radius=".36" radius-tubular=".025" color="#e2ad4c"></a-torus>
+ <a-cylinder position="0 .48 0" radius=".18" height=".94" color="#9eb8c2"></a-cylinder>
+ <a-box position=".55 .2 0" width=".22" height=".22" depth=".22" color="#d7a54d"></a-box>
+ <a-text value="PIPA / LAPISAN KOROSI" position="-1 .95 0" color="#ffffff" width="4"></a-text>
+ <a-text value="MODEL ILUSTRATIF" position="-.6 -.12 0" color="#ffffff" width="3"></a-text>
+ </a-marker><a-entity camera></a-entity>`;
+ mount.appendChild(s);arScene=s;
+ document.getElementById('arStatus').textContent='Status: meminta izin kamera. Jika prompt tidak muncul, periksa izin situs dan HTTPS.';
+ s.addEventListener('camera-init',()=>document.getElementById('arStatus').textContent='Status: kamera aktif. Arahkan ke marker Hiro.');
+ s.addEventListener('camera-error',()=>document.getElementById('arStatus').textContent='Kamera gagal. Pastikan HTTPS, izin kamera, dan kamera tidak digunakan aplikasi lain.');
+ setTimeout(()=>{if(arScene===s)document.getElementById('arStatus').textContent='Jika kamera belum aktif setelah beberapa detik, muat ulang halaman HTTPS dan periksa izin kamera.'},7000);
+};
+function stopAR(){if(arScene){try{let c=arScene.components&&arScene.components['arjs'];if(c&&c.arToolkitSource&&c.arToolkitSource.domElement){let st=c.arToolkitSource.domElement.srcObject;if(st)st.getTracks().forEach(t=>t.stop())}}catch(e){}arScene.parentNode.removeChild(arScene);arScene=null;}document.getElementById('arMount').innerHTML='<div class="arOverlay">Arahkan kamera ke marker Hiro • Jarak ±20–80 cm • Pastikan marker terang dan tidak terpotong</div>';document.getElementById('arStatus').textContent='Status: kamera ditutup.'}
+document.getElementById('closeAR').onclick=stopAR;
+document.querySelectorAll('.hotspot').forEach(h=>h.addEventListener('click',()=>document.getElementById('hotspotInfo').textContent=h.dataset.info));
+const descriptions={
+ carbon:'Baja karbon: ekonomis dan kuat, tetapi pada lingkungan korosif perlu evaluasi coating/lining, corrosion allowance, inhibitor, dan inspeksi.',
+ stainless:'Stainless steel: film pasif kaya kromium membantu ketahanan korosi. Grade harus sesuai; klorida dapat memicu pitting/crevice corrosion.',
+ hdpe:'HDPE: tahan banyak bahan kimia dan tidak mengalami korosi elektrokimia seperti logam. Tetap verifikasi tekanan, temperatur, permeasi, dan kompatibilitas.',
+ frp:'FRP: ketahanan kimia bergantung pada jenis resin, serat, sambungan, temperatur, beban, dan mutu fabrikasi.'
+};
+function runAnalysis(){
+ let f=document.getElementById('fluid').value,c=Number(document.getElementById('conc').value),t=Number(document.getElementById('temp').value),p=Number(document.getElementById('pressure').value),pr=document.getElementById('priority').value;
+ let label={river:'atmosfer lembap tepi Sungai Musi',acid:'larutan asam (contoh HCl)',chloride:'air mengandung klorida',alkali:'larutan basa'}[f];
+ let arr=f==='river'?[['Baja karbon + coating',descriptions.carbon],['Stainless steel grade sesuai',descriptions.stainless],['FRP untuk komponen tertentu',descriptions.frp]]:
+ f==='acid'?[['FRP dengan resin kompatibel',descriptions.frp],['HDPE pada batas rating',descriptions.hdpe],['Stainless steel setelah uji kompatibilitas',descriptions.stainless]]:
+ f==='chloride'?[['HDPE bila rating sesuai',descriptions.hdpe],['FRP dengan resin sesuai',descriptions.frp],['Stainless steel grade tahan klorida setelah evaluasi',descriptions.stainless]]:
+ [['HDPE setelah verifikasi kompatibilitas',descriptions.hdpe],['Baja karbon berproteksi',descriptions.carbon],['FRP dengan resin sesuai',descriptions.frp]];
+ if(pr==='cost')arr.reverse();
+ document.getElementById('case').innerHTML=`<b>Lingkungan:</b> ${label}<br><b>Konsentrasi input:</b> ${c}%<br><b>Temperatur:</b> ${t} °C<br><b>Tekanan:</b> ${p} bar<br><b>Prioritas:</b> ${pr}`;
+ document.getElementById('analysis').innerHTML=`<b>Perbandingan konseptual (bukan rekomendasi desain):</b><ol>${arr.map(x=>`<li><b>${x[0]}</b><br>${x[1]}</li>`).join('')}</ol><p><b>Penalaran:</b> ${f==='river'?'Kelembapan dan waktu kebasahan permukaan dapat mendukung korosi atmosfer pada baja. Sistem coating dan inspeksi merupakan bagian penting dari strategi proteksi.':'Sifat kimia fluida dapat memengaruhi degradasi logam maupun polimer. Data konsentrasi, temperatur, tekanan, pengotor, dan kompatibilitas spesifik harus diverifikasi.'}</p><p><b>Data yang masih diperlukan:</b> komposisi rinci, pH, kandungan oksigen/klorida, kecepatan aliran, umur desain, standar, beban mekanik, metode sambungan, serta data produsen.</p>${(t>80||p>10)?'<p><b>Peringatan:</b> temperatur atau tekanan relatif tinggi; perlu evaluasi kekuatan, creep, standar peralatan tekan, dan tinjauan ahli.</p>':''}<p><b>Refleksi:</b> Apakah data yang tersedia cukup untuk menetapkan grade material? Jelaskan.</p>`;
+}
+document.getElementById('runAnalysis').onclick=runAnalysis;
+function addMsg(txt,who){let d=document.createElement('div');d.className='msg '+who;d.textContent=txt;document.getElementById('chat').appendChild(d);document.getElementById('chat').scrollTop=9999}
+document.getElementById('askBtn').onclick=()=>{let q=document.getElementById('askText').value.trim();if(!q)return;addMsg(q,'user');let s=q.toLowerCase(),a=s.includes('klorida')?'Klorida dapat mengganggu kestabilan film pasif stainless steel dan memicu pitting atau korosi celah. Risiko bergantung pada grade, temperatur, konsentrasi, pH, dan kondisi permukaan.':s.includes('anoda')||s.includes('katoda')?'Anoda adalah lokasi oksidasi: Fe → Fe²⁺ + 2e⁻. Elektron mengalir melalui logam ke area katodik; pada lingkungan netral beroksigen, oksigen dapat direduksi menjadi OH⁻.':s.includes('musi')||s.includes('ampera')?'Sungai Musi dan kawasan Ampera menjadi konteks untuk membahas kelembapan, waktu kebasahan, dan inspeksi korosi atmosfer. Kondisi aktual struktur tidak boleh disimpulkan tanpa data inspeksi.':s.includes('hdpe')?'HDPE tidak mengalami korosi elektrokimia seperti baja dan tahan banyak larutan, tetapi rating temperatur, tekanan, permeasi, tegangan, dan kompatibilitas tetap harus diverifikasi.':'Mulailah dengan mengidentifikasi jenis material, konsentrasi fluida, pH, temperatur, tekanan, oksigen/klorida, dan kondisi aliran. Bandingkan mekanisme degradasi serta data kompatibilitas yang tervalidasi. Ini adalah tutor berbasis aturan, bukan GenAI live.';addMsg(a,'bot');document.getElementById('askText').value=''};
+const qs=[['Pada korosi elektrokimia besi, oksidasi berlangsung di…',['Katoda','Anoda','Lapisan cat'],1,'Anoda adalah lokasi oksidasi dan pelarutan logam.'],['Ion klorida dapat memicu pada stainless steel…',['Korosi sumuran','Polimerisasi','Penghilangan oksigen'],0,'Klorida pada kondisi tertentu dapat merusak film pasif lokal.'],['Mengapa baja karbon di atmosfer lembap perlu proteksi?',['Air dapat bertindak sebagai elektrolit','Baja tidak menghantarkan listrik','Oksigen tidak bereaksi'],0,'Film air/kelembapan membantu reaksi elektrokimia.'],['Informasi penting sebelum memilih material adalah…',['Warna material saja','Fluida, konsentrasi, temperatur, tekanan','Harga saja'],1,'Pemilihan material membutuhkan parameter operasi dan data kompatibilitas.']];
+document.getElementById('questions').innerHTML=qs.map((q,i)=>`<div class="card"><b>${i+1}. ${q[0]}</b>${q[1].map((o,j)=>`<label style="font-weight:normal"><input type="radio" name="q${i}" value="${j}" style="width:auto"> ${o}</label>`).join('')}<div class="hint" id="fb${i}"></div></div>`).join('');
+document.getElementById('submitQuiz').onclick=()=>{let n=0;qs.forEach((q,i)=>{let v=document.querySelector('input[name=q'+i+']:checked'),ok=v&&Number(v.value)===q[2];if(ok)n++;document.getElementById('fb'+i).textContent=(ok?'Benar. ':'Belum tepat. ')+q[3]});document.getElementById('score').innerHTML=`<b>Skor: ${n}/${qs.length}</b> — ${n===4?'Sangat baik.':'Pelajari umpan balik dan coba kembali.'}`};
+</script></body></html>
